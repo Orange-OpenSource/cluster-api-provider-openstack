@@ -50,6 +50,11 @@ type OpenStackClusterSpec struct {
 	// If NodeCIDR cannot be set this can be used to detect an existing subnet.
 	Subnet SubnetFilter `json:"subnet,omitempty"`
 
+	// ControlPlaneInternalIP can be used to create an internal port
+	// with a fixed IP address in the subnet used by the cluster that is
+	// bound to the exposed floating IP.
+	ControlPlaneInternalIP string `json:"controlPlaneInternalIP,omitempty"`
+
 	// DNSNameservers is the list of nameservers for OpenStack Subnet being created.
 	// Set this value when you need create a new network/subnet while the access
 	// through DNS is required.

@@ -155,6 +155,8 @@ type Network struct {
 	// Be careful when using APIServerLoadBalancer, because this field is optional and therefore not
 	// set in all cases
 	APIServerLoadBalancer *LoadBalancer `json:"apiServerLoadBalancer,omitempty"`
+	// Can also be nil
+	UnmanagedPort *UnmanagedPort `json:"unmanagedPort,omitempty"`
 }
 
 // Subnet represents basic information about the associated OpenStack Neutron Subnet
@@ -169,6 +171,13 @@ type Subnet struct {
 type Router struct {
 	Name string `json:"name"`
 	ID   string `json:"id"`
+}
+
+// UnmanagedPort represents basic information about a port used as unmanaged entry point
+type UnmanagedPort struct {
+	Name string `json:"name"`
+	ID   string `json:"id"`
+	IP   string `json:"ip"`
 }
 
 // LoadBalancer represents basic information about the associated OpenStack LoadBalancer

@@ -135,6 +135,13 @@ func (r *OpenStackClusterReconciler) reconcileDelete(ctx context.Context, log lo
 		}
 	}
 
+	if openStackCluster.Status.Network != nil && openStackCluster.Status.Network.UnmanagedPort != nil {
+		err = networkingService.DeleteVIPPort(openStackCluster.Status.Network.UnmanagedPort)
+	}
+	if err != nil {
+		return reconcile.Result{}, err
+	}
+
 	// Delete other things
 	if openStackCluster.Status.WorkerSecurityGroup != nil {
 		log.Info("Deleting worker security group", "name", openStackCluster.Status.WorkerSecurityGroup.Name)
@@ -341,6 +348,11 @@ func (r *OpenStackClusterReconciler) reconcileNetworkComponents(log logr.Logger,
 		err = loadBalancerService.ReconcileLoadBalancer(clusterName, openStackCluster)
 		if err != nil {
 			return errors.Errorf("failed to reconcile load balancer: %v", err)
+		}
+	} else if openStackCluster.Spec.ControlPlaneInternalIP != "" {
+		err = networkingService.ReconcileVIPPort(clusterName, openStackCluster)
+		if err != nil {
+			return errors.Errorf("failed to create VIP port: %v", err)
 		}
 	}
 

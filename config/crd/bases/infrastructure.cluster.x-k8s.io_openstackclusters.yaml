@@ -122,6 +122,11 @@ spec:
                 - host
                 - port
                 type: object
+              controlPlaneInternalIP:
+                description: ControlPlaneInternalIP can be used to create an internal
+                  port with a fixed IP address in the subnet used by the cluster that
+                  is bound to the exposed floating IP.
+                type: string
               disablePortSecurity:
                 description: DisablePortSecurity disables the port security of the
                   network created for the Kubernetes cluster, which also disables
@@ -482,6 +487,20 @@ spec:
                     required:
                     - cidr
                     - id
+                    - name
+                    type: object
+                  unmanagedPort:
+                    description: Can also be nil
+                    properties:
+                      id:
+                        type: string
+                      ip:
+                        type: string
+                      name:
+                        type: string
+                    required:
+                    - id
+                    - ip
                     - name
                     type: object
                 required:
